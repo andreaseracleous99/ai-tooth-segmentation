@@ -1,0 +1,6 @@
+path: datasets/train-yolo/merged
+train: images/train
+val: images/val
+
+names:
+  0: tooth
