@@ -6,8 +6,8 @@ venv\Scripts\activate
 
 ====================================
 
-yolo detect train data=data.yaml model=yolov8n.pt imgsz=1024 epochs=100 batch=4
+yolo detect train model=yolo11n.pt data=datasets/train-yolo/merged/data.yaml imgsz=1024 epochs=100 batch=8
 
 ====================================
 
-yolo detect predict model=runs/detect/train/weights/best.pt source=dataset/test/1.jpg conf=0.25 save=True
+yolo detect predict model=runs/detect/train/weights/best.pt source=path\to\radiograph.jpg save=True conf=0.25

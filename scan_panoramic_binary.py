@@ -7,11 +7,8 @@ from torchvision.ops import nms as tv_nms
 from torch import nn
 from PIL import Image
 
-# ----------------------------
-# CONFIG
-# ----------------------------
-MODEL_PATH = Path("models/tooth_vs_nontooth_resnet18_best.pth")
-INPUT_IMAGE = Path("datasets/train/11/images/1.jpg")
+MODEL_PATH = Path("models/tooth_vs_nontooth_binary_resnet18.pth")
+INPUT_IMAGE = Path("datasets/train/20/images/6.png")
 OUT_IMAGE = Path("outputs/panoramic_predictions.jpg")
 OUT_IMAGE.parent.mkdir(exist_ok=True, parents=True)
 
@@ -27,9 +24,6 @@ TOPK = 80
 ROI_Y_MIN = 0.35
 ROI_Y_MAX = 0.80
 
-# ----------------------------
-# LOAD MODEL
-# ----------------------------
 ckpt = torch.load(MODEL_PATH, map_location="cpu")
 classes = ckpt["classes"]
 if "tooth" not in classes:
@@ -47,12 +41,9 @@ model.eval()
 
 tf = transforms.Compose([
     transforms.ToTensor(),
-    transforms.Normalize(mean, std),  # IMPORTANT
+    transforms.Normalize(mean, std),
 ])
 
-# ----------------------------
-# LOAD IMAGE
-# ----------------------------
 img_bgr = cv2.imread(str(INPUT_IMAGE))
 if img_bgr is None:
     raise FileNotFoundError(f"Could not read: {INPUT_IMAGE}")
@@ -71,9 +62,6 @@ roi_y2 = int((ROI_Y_MAX * h) + pad)
 boxes = []
 scores = []
 
-# ----------------------------
-# SLIDING WINDOW INFERENCE
-# ----------------------------
 count = 0
 kept = 0
 
@@ -116,9 +104,6 @@ if len(boxes) == 0:
     print(f"[DONE] Saved: {OUT_IMAGE}")
     raise SystemExit
 
-# ----------------------------
-# TOP-K filter BEFORE NMS
-# ----------------------------
 boxes_np = np.array(boxes, dtype=np.float32)
 scores_np = np.array(scores, dtype=np.float32)
 
@@ -128,9 +113,6 @@ if len(order) > TOPK:
 boxes_np = boxes_np[order]
 scores_np = scores_np[order]
 
-# ----------------------------
-# NMS
-# ----------------------------
 boxes_t = torch.tensor(boxes_np, dtype=torch.float32)
 scores_t = torch.tensor(scores_np, dtype=torch.float32)
 
@@ -140,9 +122,6 @@ scores_nms = scores_np[keep_idx]
 
 print(f"[INFO] After TOPK({TOPK}) + NMS(iou={NMS_IOU}): {len(boxes_nms)} boxes")
 
-# ----------------------------
-# DRAW + SAVE
-# ----------------------------
 out = img_bgr.copy()
 for (x1, y1, x2, y2), sc in zip(boxes_nms.astype(int), scores_nms):
     cv2.rectangle(out, (x1, y1), (x2, y2), (0, 255, 0), 2)
