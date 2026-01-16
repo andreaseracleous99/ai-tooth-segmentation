@@ -19,16 +19,16 @@ def seed_everything(seed=42):
 def main():
     seed_everything(42)
 
-    DATA_DIR = Path("datasets/radiograph_vs_not_radiograph")
+    DATA_DIR = Path("datasets/radiograph_vs_not_radiograph")  
     OUT_DIR = Path("models")
     OUT_DIR.mkdir(exist_ok=True)
 
     IMG_SIZE = 224
     VAL_RATIO = 0.2
     BATCH_SIZE = 64
-    NUM_WORKERS = 0  # windows safer
+    NUM_WORKERS = 0  
 
-    WARMUP_l = 1
+    WARMUP_EPOCHS = 1
     FINETUNE_EPOCHS = 6
     LR_WARMUP = 1e-3
     LR_FINETUNE = 1e-4
@@ -49,7 +49,6 @@ def main():
     IMAGENET_MEAN = (0.485, 0.456, 0.406)
     IMAGENET_STD  = (0.229, 0.224, 0.225)
 
-    # Augmentations that help radiographs (contrast/etc.)
     train_tf = transforms.Compose([
         transforms.Resize((IMG_SIZE, IMG_SIZE)),
         transforms.RandomApply([transforms.ColorJitter(brightness=0.2, contrast=0.3)], p=0.6),
@@ -67,7 +66,6 @@ def main():
         transforms.Normalize(IMAGENET_MEAN, IMAGENET_STD),
     ])
 
-    # Load dataset
     full_train_base = datasets.ImageFolder(DATA_DIR, transform=train_tf)
     classes = full_train_base.classes
     num_classes = len(classes)
@@ -76,12 +74,11 @@ def main():
     print("Classes:", classes)
     print("Class -> index:", {c: i for i, c in enumerate(classes)})
 
-    if set(classes) != {"radiograph", "not_radiograph"}:
+    if set(classes) != {"radiograph_patch", "not_radiograph"}:
         print("\n[WARN] Recommended class folder names:")
         print("  radiograph_patch/")
         print("  not_radiograph/\n")
 
-    # Split
     val_len = int(len(full_train_base) * VAL_RATIO)
     train_len = len(full_train_base) - val_len
 
@@ -102,7 +99,6 @@ def main():
     print(f"Split -> Train: {len(train_subset)} | Val: {len(val_subset)}")
     print("Train batches:", len(train_loader), "| Val batches:", len(val_loader))
 
-    # Class weights (optional; helps imbalance)
     train_targets = [full_train_base.targets[i] for i in train_subset.indices]
     counts = torch.zeros(num_classes, dtype=torch.long)
     for t in train_targets:
@@ -114,7 +110,6 @@ def main():
 
     criterion = nn.CrossEntropyLoss(weight=weights.to(DEVICE))
 
-    # Model
     model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
     model.fc = nn.Linear(model.fc.in_features, num_classes)
     model = model.to(DEVICE)
