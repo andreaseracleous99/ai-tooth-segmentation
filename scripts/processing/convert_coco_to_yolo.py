@@ -3,9 +3,9 @@ from pathlib import Path
 from collections import defaultdict
 import numpy as np
 
-COCO_JSON = Path("../../datasets/train-yolo/27/_annotations.coco.json") 
-IMAGES_DIR = Path("../../datasets/train-yolo/27/images")            
-OUT_LABELS_DIR = Path("../../datasets/train-yolo/27/labels")      
+COCO_JSON = Path("datasets/train-yolo/27/_annotations.coco.json") 
+IMAGES_DIR = Path("datasets/train-yolo/27/images")            
+OUT_LABELS_DIR = Path("datasets/train-yolo/27/labels")      
 
 BINARY_MODE = True     
 CATEGORY_ID_TO_YOLO = {}  

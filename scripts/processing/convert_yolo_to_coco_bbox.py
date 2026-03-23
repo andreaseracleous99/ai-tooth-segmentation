@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from PIL import Image
 
-DATASET_ROOT = Path("Datasets/30")
+DATASET_ROOT = Path("datasets/tooth_vs_nontooth/30")
 IMG_DIR = DATASET_ROOT / "images"
 LAB_DIR = DATASET_ROOT / "labels"
 OUT_JSON = DATASET_ROOT / "annotations_coco_bbox.json"

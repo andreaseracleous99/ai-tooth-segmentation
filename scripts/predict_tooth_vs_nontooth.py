@@ -5,9 +5,9 @@ from torchvision import models, transforms
 from PIL import Image
 import argparse
 
-IMAGE_PATH = Path("../datasets/tooth_vs_nontooth/merged/binary_patches/tooth/tooth_00000000.jpg")
-RADIOGRAPH_MODEL_PATH = Path("../models/radiograph_binary.pth")
-TOOTH_MODEL_PATH = Path("../models/tooth_vs_nontooth_binary.pth")
+IMAGE_PATH = Path("datasets/tooth_vs_nontooth/merged/binary_patches/tooth/tooth_00000000.jpg")
+RADIOGRAPH_MODEL_PATH = Path("models/radiograph_binary.pth")
+TOOTH_MODEL_PATH = Path("models/tooth_vs_nontooth_binary.pth")
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 

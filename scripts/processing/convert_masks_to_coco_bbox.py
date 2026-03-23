@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 from PIL import Image
 
-DATASET_ROOT = Path("Datasets/42")
+DATASET_ROOT = Path("datasets/tooth_vs_nontooth/42")
 IMG_DIR = DATASET_ROOT / "images"
 MASK_DIR = DATASET_ROOT / "masks"
 OUT_JSON = DATASET_ROOT / "annotations_coco_bbox.json"

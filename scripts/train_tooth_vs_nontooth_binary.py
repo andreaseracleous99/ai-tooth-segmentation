@@ -21,8 +21,8 @@ def seed_everything(seed: int = 42):
 def main():
     seed_everything(42)
 
-    DATA_DIR = Path("../datasets/tooth_vs_nontooth/merged/binary_patches") 
-    OUT_DIR = Path("../models")
+    DATA_DIR = Path("datasets/tooth_vs_nontooth/merged/binary_patches") 
+    OUT_DIR = Path("models")
     OUT_DIR.mkdir(exist_ok=True)
 
     IMG_SIZE = 224

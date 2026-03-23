@@ -1,10 +1,10 @@
 import shutil
 from pathlib import Path
 
-DATASETS_ROOT = Path("../../datasets/train-yolo")  
+DATASETS_ROOT = Path("datasets/train-yolo")  
 
-OUT_IMG = Path("../../datasets/train-yolo/merged/images/train")
-OUT_LBL = Path("../../datasets/train-yolo/merged/labels/train")
+OUT_IMG = Path("datasets/train-yolo/merged/images/train")
+OUT_LBL = Path("datasets/train-yolo/merged/labels/train")
 
 OUT_IMG.mkdir(parents=True, exist_ok=True)
 OUT_LBL.mkdir(parents=True, exist_ok=True)

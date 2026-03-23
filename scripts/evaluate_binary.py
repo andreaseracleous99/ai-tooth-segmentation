@@ -6,9 +6,10 @@ from torch import nn
 from torchvision import models
 from collections import Counter
 
-TEST_DIR = Path("../datasets/tooth_vs_nontooth/split/test")
-MODEL_PATH = Path("../models/tooth_vs_nontooth_binary.pth")
+TEST_DIR = Path("datasets/tooth_vs_nontooth/merged/binary_patches")
+MODEL_PATH = Path("models/tooth_vs_nontooth_binary.pth")
 
+print("Loading model...")
 ckpt = torch.load(MODEL_PATH, map_location="cpu", weights_only=True)
 classes = ckpt["classes"]
 img_size = ckpt.get("img_size", 224)
@@ -19,6 +20,7 @@ model = models.resnet18(weights=None)
 model.fc = nn.Linear(model.fc.in_features, len(classes))
 model.load_state_dict(ckpt["model_state"])
 model.eval()
+print("Model loaded.")
 
 tf = transforms.Compose([
     transforms.Resize((img_size, img_size)),
@@ -29,13 +31,17 @@ tf = transforms.Compose([
 dataset = datasets.ImageFolder(TEST_DIR, transform=tf)
 loader = DataLoader(dataset, batch_size=64, shuffle=False)
 
+print(f"Loaded dataset with {len(dataset)} images, {len(loader)} batches")
+
 y_true, y_pred = [], []
 with torch.no_grad():
-    for x, y in loader:
+    for batch_idx, (x, y) in enumerate(loader, 1):
         logits = model(x)
         pred = logits.argmax(dim=1)
         y_true.extend(y.tolist())
         y_pred.extend(pred.tolist())
+        if batch_idx % 100 == 0:
+            print(f"Processed {batch_idx}/{len(loader)} batches")
 
 # Compute accuracy
 correct = sum(1 for t, p in zip(y_true, y_pred) if t == p)

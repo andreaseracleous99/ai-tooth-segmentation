@@ -2,16 +2,16 @@ from pathlib import Path
 import shutil
 
 SRC_ROOTS = [
-    Path("Datasets/3/binary_patches"),
-    Path("Datasets/11/binary_patches"),
-    Path("Datasets/12/binary_patches"),
-    Path("Datasets/20/binary_patches"),
-    Path("Datasets/27/binary_patches"),
-    Path("Datasets/30/binary_patches"),
-    Path("Datasets/42/binary_patches"),
+    Path("datasets/tooth_vs_nontooth/3/binary_patches"),
+    Path("datasets/tooth_vs_nontooth/11/binary_patches"),
+    Path("datasets/tooth_vs_nontooth/12/binary_patches"),
+    Path("datasets/tooth_vs_nontooth/20/binary_patches"),
+    Path("datasets/tooth_vs_nontooth/27/binary_patches"),
+    Path("datasets/tooth_vs_nontooth/30/binary_patches"),
+    Path("datasets/tooth_vs_nontooth/42/binary_patches"),
 ]
 
-OUT_DIR = Path("Datasets/ALL/binary_patches")
+OUT_DIR = Path("datasets/tooth_vs_nontooth/ALL/binary_patches")
 CLASSES = ["tooth", "non_tooth"]
 
 for cls in CLASSES:

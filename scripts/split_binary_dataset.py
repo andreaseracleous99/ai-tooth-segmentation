@@ -2,8 +2,8 @@ from pathlib import Path
 import shutil
 import random
 
-DATA_DIR = Path("../datasets/tooth_vs_nontooth/merged/binary_patches")
-OUT_DIR = Path("../datasets/tooth_vs_nontooth/split")
+DATA_DIR = Path("datasets/tooth_vs_nontooth/merged/binary_patches")
+OUT_DIR = Path("datasets/tooth_vs_nontooth/split")
 (OUT_DIR / "train" / "tooth").mkdir(parents=True, exist_ok=True)
 (OUT_DIR / "train" / "non_tooth").mkdir(parents=True, exist_ok=True)
 (OUT_DIR / "val" / "tooth").mkdir(parents=True, exist_ok=True)

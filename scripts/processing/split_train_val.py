@@ -2,11 +2,11 @@ import random
 import shutil
 from pathlib import Path
 
-IMG_TRAIN = Path("../../datasets/train-yolo/merged/images/train")
-LBL_TRAIN = Path("../../datasets/train-yolo/merged/labels/train")
+IMG_TRAIN = Path("datasets/train-yolo/merged/images/train")
+LBL_TRAIN = Path("datasets/train-yolo/merged/labels/train")
 
-IMG_VAL = Path("../../datasets/train-yolo/merged/images/val")
-LBL_VAL = Path("../../datasets/train-yolo/merged/labels/val")
+IMG_VAL = Path("datasets/train-yolo/merged/images/val")
+LBL_VAL = Path("datasets/train-yolo/merged/labels/val")
 
 VAL_RATIO = 0.2
 SEED = 42

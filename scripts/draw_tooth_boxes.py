@@ -1,13 +1,13 @@
 from ultralytics import YOLO
 from pathlib import Path
 
-MODEL = "../models/tooth_boxes_v2.pt"
-IMG = "../datasets/tooth_boxes/11/images/100.jpg"
+MODEL = "models/tooth_boxes_v2.pt"
+IMG = "datasets/tooth_boxes/11/images/100.jpg"
 
 CONF = 0.25 
 IMGSZ = 1024 
 
-PROJECT = "../runs/detect"
+PROJECT = "runs/detect"
 NAME = "predict" 
 
 def main():
