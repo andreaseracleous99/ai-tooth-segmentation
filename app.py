@@ -65,6 +65,21 @@ def predict_classifier(model, classes, tf, img: Image.Image):
     return pred_class, conf, probs_dict
 
 
+def classify_patches(pil_img: Image.Image, model, classes, tf, patch_size=120, stride=60):
+    W, H = pil_img.size
+    tooth_count = 0
+    total_patches = 0
+    for y in range(0, H - patch_size + 1, stride):
+        for x in range(0, W - patch_size + 1, stride):
+            patch = pil_img.crop((x, y, x + patch_size, y + patch_size))
+            pred, _, _ = predict_classifier(model, classes, tf, patch)
+            if pred == "tooth":
+                tooth_count += 1
+            total_patches += 1
+    tooth_ratio = tooth_count / total_patches if total_patches > 0 else 0
+    return "tooth" if tooth_ratio > 0.5 else "non_tooth", tooth_ratio
+
+
 # ============================
 # HELPERS - YOLO
 # ============================
@@ -170,10 +185,18 @@ with tab1:
                     tooth_model, tooth_classes, tooth_tf, pil_img
                 )
 
-                st.markdown("### Tooth vs Non-tooth")
+                # Patch-based classification
+                patch_pred, tooth_ratio = classify_patches(pil_img, tooth_model, tooth_classes, tooth_tf)
+
+                st.markdown("### Tooth vs Non-tooth (Full Image)")
                 st.write("Prediction:", tooth_pred)
                 st.write("Confidence:", f"{tooth_conf:.4f}")
                 st.json(tooth_probs)
+
+                st.markdown("### Tooth vs Non-tooth (Patch-Based)")
+                st.write("Prediction:", patch_pred)
+                st.write("Tooth Ratio:", f"{tooth_ratio:.2f}")
+                st.write("Total Patches:", int(tooth_ratio * 100), "/", 100)  # approximate
 
 
 # ============================
